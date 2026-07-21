@@ -1,0 +1,91 @@
+/* Layout + the bits xp.css doesn't cover (menu bar, toolbar, terminal) */
+html, body { height: 100%; margin: 0; background: #3a6ea5; overflow: hidden; }
+
+#app {
+  display: flex; flex-direction: column;
+  position: absolute; inset: 4px;
+}
+#app .window-body-main {
+  flex: 1; display: flex; flex-direction: column;
+  margin: 0; padding: 0; min-height: 0;
+}
+
+/* --- menu bar --- */
+.menubar {
+  display: flex; background: #ece9d8; padding: 1px 0;
+  font-size: 11px; user-select: none;
+}
+.menubar > .menu-title { padding: 3px 7px; cursor: default; }
+.menubar > .menu-title:hover, .menubar > .menu-title.open {
+  background: #316ac5; color: #fff;
+}
+.menu-popup {
+  position: absolute; z-index: 100; min-width: 160px;
+  background: #fff; border: 1px solid #aca899;
+  box-shadow: 2px 2px 3px rgba(0,0,0,.3);
+  padding: 2px; font-size: 11px; user-select: none;
+}
+.menu-popup .menu-item { padding: 4px 20px 4px 20px; white-space: nowrap; cursor: default; }
+.menu-popup .menu-item:hover:not(.disabled) { background: #316ac5; color: #fff; }
+.menu-popup .menu-item.disabled { color: #aca899; }
+.menu-popup .menu-item .check { position: absolute; left: 6px; }
+.menu-popup .menu-sep { border-top: 1px solid #d8d5c8; margin: 3px 2px; }
+
+/* --- toolbar --- */
+.toolbar {
+  display: flex; gap: 2px; align-items: center;
+  background: #ece9d8; border-top: 1px solid #fff;
+  border-bottom: 1px solid #aca899; padding: 2px 4px;
+}
+.toolbar button {
+  min-width: 26px; min-height: 24px; padding: 2px 4px;
+  font-size: 13px; line-height: 1;
+}
+.toolbar button:disabled { filter: grayscale(1); opacity: .5; }
+.toolbar .tb-sep { width: 1px; height: 20px; background: #aca899; margin: 0 3px; }
+
+/* --- terminal --- */
+#term {
+  flex: 1; background: #fff; color: #000;
+  border: 2px inset #ece9d8;
+  overflow-y: scroll; min-height: 0;
+  cursor: text; outline: none;
+}
+#screen {
+  background: #fff; color: #000; /* xp.css styles pre dark; HyperTerminal is white */
+  margin: 0; padding: 2px 3px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px; line-height: 1.15;
+  white-space: pre-wrap; word-break: break-all;
+}
+#cursor {
+  display: inline-block; width: 8px;
+  background: #000; color: #000;
+}
+#term.connected #cursor { animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { background: transparent; } }
+
+/* --- status bar --- */
+.status-bar { user-select: none; }
+.status-bar-field { padding: 1px 6px; }
+.status-bar-field.dim { color: #aca899; }
+
+/* --- modal dialogs --- */
+.dlg-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+}
+.dlg-overlay[hidden] { display: none; }
+.dlg { min-width: 300px; max-width: 90vw; }
+.dlg .field-row { margin: 8px 0; }
+.dlg label { min-width: 110px; display: inline-block; }
+.dlg select, .dlg input[type=text] { width: 150px; }
+.dlg .dlg-buttons { display: flex; justify-content: flex-end; gap: 6px; margin-top: 14px; }
+.dlg .dlg-buttons button { min-width: 70px; }
+
+/* connection icon strip (Connection Description dialog) */
+.icon-strip { display: flex; gap: 6px; border: 1px inset #ece9d8; padding: 8px; overflow-x: auto; background: #fff; }
+.icon-strip .conn-icon {
+  font-size: 26px; padding: 4px 8px; cursor: default; border: 1px solid transparent;
+}
+.icon-strip .conn-icon.sel { border: 1px dotted #316ac5; background: #cde; }

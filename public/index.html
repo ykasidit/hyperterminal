@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HyperTerminal online - free web serial terminal (COM port) in your browser</title>
+<meta name="description" content="A free HyperTerminal-style serial terminal that runs in your browser using the Web Serial API. Talk to COM ports, USB-serial adapters, Arduino, ESP32, GPS and modems - no install, no data leaves your PC.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>☎</text></svg>">
+<link rel="stylesheet" href="xp.css">
+<link rel="stylesheet" href="hyperterm.css">
+</head>
+<body>
+
+<div class="window" id="app">
+  <div class="title-bar">
+    <div class="title-bar-text" id="titleText">hyperterm - HyperTerminal</div>
+    <div class="title-bar-controls">
+      <button aria-label="Minimize"></button>
+      <button aria-label="Maximize"></button>
+      <button aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="window-body window-body-main">
+    <div class="menubar" id="menubar"></div>
+    <div class="toolbar" id="toolbar"></div>
+    <div id="term" tabindex="0" title="Click here and type - keys go to the connected device">
+      <pre id="screen"></pre>
+    </div>
+    <div class="status-bar">
+      <p class="status-bar-field" id="sbConn">Disconnected</p>
+      <p class="status-bar-field">Auto detect</p>
+      <p class="status-bar-field" id="sbSettings">115200 8-N-1</p>
+      <p class="status-bar-field dim" id="sbScroll">SCROLL</p>
+      <p class="status-bar-field dim" id="sbCaps">CAPS</p>
+      <p class="status-bar-field dim" id="sbNum">NUM</p>
+      <p class="status-bar-field dim" id="sbCapture">Capture</p>
+      <p class="status-bar-field dim">Print echo</p>
+    </div>
+  </div>
+</div>
+
+<!-- Connection Description dialog -->
+<div class="dlg-overlay" id="dlgNew" hidden>
+  <div class="window dlg">
+    <div class="title-bar"><div class="title-bar-text">Connection Description</div></div>
+    <div class="window-body">
+      <p>Enter a name and choose an icon for the connection:</p>
+      <div class="field-row"><label for="connName">Name:</label>
+        <input type="text" id="connName" value="hyperterm"></div>
+      <p>Icon:</p>
+      <div class="icon-strip" id="iconStrip"></div>
+      <div class="dlg-buttons">
+        <button id="newOk">OK</button>
+        <button data-close="dlgNew">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COM Properties dialog -->
+<div class="dlg-overlay" id="dlgProps" hidden>
+  <div class="window dlg">
+    <div class="title-bar"><div class="title-bar-text">COM Properties</div></div>
+    <div class="window-body">
+      <div class="field-row"><label for="setConnUsing">Connect using:</label>
+        <select id="setConnUsing" style="width:220px">
+          <option value="serial" selected>Web Serial - real device</option>
+        </select></div>
+      <fieldset>
+        <legend>Port Settings</legend>
+        <div class="field-row"><label for="setBaud">Bits per second:</label>
+          <select id="setBaud"></select></div>
+        <div class="field-row"><label for="setData">Data bits:</label>
+          <select id="setData"><option>7</option><option selected>8</option></select></div>
+        <div class="field-row"><label for="setParity">Parity:</label>
+          <select id="setParity"><option value="none" selected>None</option><option value="even">Even</option><option value="odd">Odd</option></select></div>
+        <div class="field-row"><label for="setStop">Stop bits:</label>
+          <select id="setStop"><option selected>1</option><option>2</option></select></div>
+        <div class="field-row"><label for="setFlow">Flow control:</label>
+          <select id="setFlow"><option value="none" selected>None</option><option value="hardware">Hardware</option></select></div>
+      </fieldset>
+      <div class="dlg-buttons">
+        <button id="propsRestore">Restore Defaults</button>
+        <button id="propsOk">OK</button>
+        <button data-close="dlgProps">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ASCII Setup dialog -->
+<div class="dlg-overlay" id="dlgAscii" hidden>
+  <div class="window dlg">
+    <div class="title-bar"><div class="title-bar-text">ASCII Setup</div></div>
+    <div class="window-body">
+      <fieldset>
+        <legend>ASCII Sending</legend>
+        <div class="field-row"><input type="checkbox" id="ascSendLf">
+          <label for="ascSendLf">Send line ends with line feeds</label></div>
+        <div class="field-row"><input type="checkbox" id="ascEcho">
+          <label for="ascEcho">Echo typed characters locally</label></div>
+      </fieldset>
+      <fieldset>
+        <legend>ASCII Receiving</legend>
+        <div class="field-row"><input type="checkbox" id="ascInLf">
+          <label for="ascInLf">Append line feeds to incoming line ends</label></div>
+      </fieldset>
+      <div class="dlg-buttons">
+        <button id="asciiOk">OK</button>
+        <button data-close="dlgAscii">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- About dialog -->
+<div class="dlg-overlay" id="dlgAbout" hidden>
+  <div class="window dlg">
+    <div class="title-bar"><div class="title-bar-text">About HyperTerminal</div></div>
+    <div class="window-body">
+      <p>☎ <b>HyperTerminal online</b> - a tribute to the long-lost Windows serial terminal,
+      rebuilt on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank" rel="noopener">Web Serial API</a>.</p>
+      <p>All data stays between your browser and your serial port - nothing is uploaded.</p>
+      <p>Works in Chrome and Edge on desktop. Firefox and Safari do not support Web Serial yet.</p>
+      <p>By <a href="https://www.clearevo.com" target="_blank" rel="noopener">ClearEvo</a> -
+      maker of the <a href="https://www.clearevo.com/ecodroidgps" target="_blank" rel="noopener">EcoDroidGPS</a> Bluetooth GPS receiver.</p>
+      <div class="dlg-buttons"><button data-close="dlgAbout">OK</button></div>
+    </div>
+  </div>
+</div>
+
+<noscript><p style="color:#fff;padding:1em">HyperTerminal online needs JavaScript.</p></noscript>
+<script type="module" src="app.js"></script>
+</body>
+</html>
