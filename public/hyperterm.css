@@ -83,6 +83,16 @@ html, body { height: 100%; margin: 0; background: #3a6ea5; overflow: hidden; }
 .dlg .dlg-buttons { display: flex; justify-content: flex-end; gap: 6px; margin-top: 14px; }
 .dlg .dlg-buttons button { min-width: 70px; }
 
+/* XP-style balloon toast */
+.toast-xp {
+  position: fixed; top: 40px; right: 16px; z-index: 300;
+  max-width: 280px; padding: 8px 12px;
+  background: #ffffe1; color: #000;
+  border: 1px solid #000; border-radius: 6px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,.4);
+  font-size: 11px;
+}
+
 /* connection icon strip (Connection Description dialog) */
 .icon-strip { display: flex; gap: 6px; border: 1px inset #ece9d8; padding: 8px; overflow-x: auto; background: #fff; }
 .icon-strip .conn-icon {

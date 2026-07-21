@@ -48,6 +48,19 @@ document.addEventListener('selectionchange', () => {
 
 function printLocal(text) { feed(term, text); render(); }
 
+let toastEl = null, toastTimer = 0;
+function toast(msg) {
+  if (!toastEl) {
+    toastEl = document.createElement('div');
+    toastEl.className = 'toast-xp';
+    document.body.appendChild(toastEl);
+  }
+  toastEl.textContent = msg;
+  toastEl.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toastEl.hidden = true; }, 4000);
+}
+
 // ---------- serial ----------
 async function call() {
   if (connected) return;
@@ -158,6 +171,7 @@ termEl.addEventListener('keydown', (e) => {
 
 termEl.addEventListener('paste', (e) => {
   e.preventDefault();
+  if (!connected) { toast('Paste failed - not connected. Call > Call (or the \u{1F4DE} button) first, then paste again.'); return; }
   send(e.clipboardData.getData('text'));
 });
 
@@ -175,6 +189,7 @@ async function copySelection() {
 }
 
 async function pasteToHost() {
+  if (!connected) { toast('Paste failed - not connected. Call > Call (or the \u{1F4DE} button) first, then paste again.'); return; }
   try { send(await navigator.clipboard.readText()); }
   catch { printLocal('\r\n[clipboard read blocked - use right-click paste]\r\n'); }
 }
@@ -429,6 +444,15 @@ TOOLS.forEach((tdef) => {
   if (action) b.onclick = action; else b.disabled = true;
   toolbar.appendChild(b);
 });
+
+// ---------- fake window controls ----------
+const WINDOW_JOKES = {
+  Minimize: "Minimize? I'm just a web tab wearing an XP costume - the real buttons are upstairs.",
+  Maximize: "I only imitate the looks - for the real thing your browser does F11.",
+  Close: "Nice try! I'm a web page cosplaying as Windows XP. Close my tab if you really must (Ctrl+W).",
+};
+document.querySelectorAll('#app .title-bar-controls button').forEach((b) =>
+  b.addEventListener('click', () => toast(WINDOW_JOKES[b.getAttribute('aria-label')])));
 
 // ---------- boot ----------
 loadSession();
