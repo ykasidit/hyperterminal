@@ -29,3 +29,7 @@ npx wrangler dev     # local dev server
 
 Not implemented (the original had them): Zmodem/Xmodem/Ymodem/Kermit file transfer,
 printing, Wait for a Call (browsers can't listen for incoming serial calls).
+
+## License
+
+GPL v2, like the [Bluetooth GNSS](https://github.com/ykasidit/bluetooth_gnss) app - see [LICENSE](LICENSE).
