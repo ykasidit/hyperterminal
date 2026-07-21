@@ -1,6 +1,14 @@
 /* Layout + the bits xp.css doesn't cover (menu bar, toolbar, terminal) */
 html, body { height: 100%; margin: 0; background: #3a6ea5; overflow: hidden; }
 
+/* xp.css inherits the Win98 bitmap font; real XP dialogs were Tahoma 8pt.
+   Title bar stays Trebuchet MS (xp.css gets that right). */
+body, button, select, input, textarea, label, legend, fieldset,
+.window-body, .menubar, .menu-popup, .status-bar-field, .toast-xp {
+  font-family: Tahoma, 'Segoe UI', 'DejaVu Sans', Arial, sans-serif;
+  font-size: 11px;
+}
+
 #app {
   display: flex; flex-direction: column;
   position: absolute; inset: 4px;
