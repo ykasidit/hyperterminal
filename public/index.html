@@ -118,7 +118,7 @@
   <div class="window dlg">
     <div class="title-bar"><div class="title-bar-text">About HyperTerminal</div></div>
     <div class="window-body">
-      <p>☎ <b>HyperTerminal online</b> - a tribute to the long-lost Windows serial terminal,
+      <p>☎ <b>HyperTerminal online</b> <span id="aboutVer"></span> - a tribute to the long-lost Windows serial terminal,
       rebuilt on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API" target="_blank" rel="noopener">Web Serial API</a>.</p>
       <p>All data stays between your browser and your serial port - nothing is uploaded.</p>
       <p>Works in Chrome and Edge on desktop. Firefox and Safari do not support Web Serial yet.</p>
@@ -131,6 +131,7 @@
 </div>
 
 <noscript><p style="color:#fff;padding:1em">HyperTerminal online needs JavaScript.</p></noscript>
+<script>window.HT_VERSION='dev'</script>
 <script type="module" src="app.js"></script>
 </body>
 </html>

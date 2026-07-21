@@ -236,9 +236,10 @@ function loadSession() {
     setTitle();
   } catch {}
 }
+const VER = window.HT_VERSION || 'dev';
 function setTitle() {
-  $('titleText').textContent = `${sessionName} - HyperTerminal`;
-  document.title = `${sessionName} - HyperTerminal online`;
+  $('titleText').textContent = `${sessionName} - HyperTerminal [${VER}]`;
+  document.title = `${sessionName} - HyperTerminal online ${VER}`;
 }
 
 // ---------- dialogs ----------
@@ -455,6 +456,7 @@ document.querySelectorAll('#app .title-bar-controls button').forEach((b) =>
   b.addEventListener('click', () => toast(WINDOW_JOKES[b.getAttribute('aria-label')])));
 
 // ---------- boot ----------
+$('aboutVer').textContent = VER;
 loadSession();
 setTitle();
 updateConnStatus();
