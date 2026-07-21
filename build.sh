@@ -48,6 +48,19 @@ cat > dist/_headers << 'EOF'
   Cache-Control: public, max-age=31536000, immutable
 EOF
 
+# robots.txt + sitemap for the subdomain (main site's sitemap can't list other hosts)
+cat > dist/robots.txt << 'EOF'
+User-agent: *
+Allow: /
+Sitemap: https://hyperterminal.clearevo.com/sitemap.xml
+EOF
+cat > dist/sitemap.xml << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://hyperterminal.clearevo.com/</loc><lastmod>$(date -u +%Y-%m-%d)</lastmod></url>
+</urlset>
+EOF
+
 # self-check: fail loudly if any un-rewritten reference survived
 ! grep -q 'url(ms_sans_serif' dist/assets/xp.*.css
 ! grep -q 'url(PerfectDOS' dist/assets/xp.*.css
