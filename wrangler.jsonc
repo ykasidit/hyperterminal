@@ -1,6 +1,6 @@
 {
   "name": "hyperterminal",
   "compatibility_date": "2026-07-01",
-  "assets": { "directory": "./dist" },
+  "main": "worker.js",
   "routes": [{ "pattern": "hyperterminal.clearevo.com", "custom_domain": true }]
 }
