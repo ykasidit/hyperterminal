@@ -240,7 +240,7 @@ function loadSession() {
 }
 const VER = window.HT_VERSION || 'dev';
 function setTitle() {
-  $('titleText').textContent = `${sessionName} - HyperTerminal [${VER}]`;
+  $('titleText').textContent = `☎ ClearEvo.com HyperTerminal - ${sessionName} [${VER}]`;
   document.title = `${sessionName} - HyperTerminal online ${VER}`;
 }
 
