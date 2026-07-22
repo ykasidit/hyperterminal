@@ -216,7 +216,9 @@ function sendTextFile() {
   input.accept = '.txt,text/*';
   input.onchange = async () => {
     const f = input.files[0];
-    if (f) send(await f.text());
+    if (!f) return;
+    if (f.size > 10 * 1048576) { alert(`file is ${(f.size / 1048576).toFixed(0)} MB - Send Text File is limited to 10 MB`); return; }
+    send(await f.text());
   };
   input.click();
 }
