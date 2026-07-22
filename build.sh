@@ -42,6 +42,7 @@ done
 VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo dev)
 sed -i "s|window.HT_VERSION='dev'|window.HT_VERSION='$VERSION'|" "$WORK/index.html"
 cp "$WORK/index.html" dist/
+cp "$WORK/manifest.json" "$WORK"/icon-*.png dist/
 
 # self-check: fail loudly if any un-rewritten reference survived
 ! grep -q 'url(ms_sans_serif\.woff' dist/assets/xp.*.css
