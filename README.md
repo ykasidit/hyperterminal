@@ -1,5 +1,7 @@
 # HyperTerminal online
 
+> **Archived (2026-11-26):** this tool is no longer developed or supported. It stays online as it is at https://www.clearevo.com/hyperterminal/.
+
 A tribute to the long-lost Windows HyperTerminal, rebuilt as a pure-frontend web serial
 terminal on the [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API).
 
